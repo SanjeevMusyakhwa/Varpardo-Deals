@@ -4,7 +4,14 @@ from app.models import *
 from django.db.models import Count, Q
 from .models import Category
 
-# Create your views here.
+
+######################## HOME VIEW ##################################
+######################## HOME VIEW ##################################
+######################## HOME VIEW ##################################
+######################## HOME VIEW ##################################
+######################## HOME VIEW ##################################
+
+
 class HomePage(TemplateView):
   template_name = 'home.html'
 
@@ -13,6 +20,14 @@ class HomePage(TemplateView):
     context['products'] = Product.objects.all().order_by('-id')
 
     return context
+
+
+######################## CATEGORY VIEW ##################################
+######################## CATEGORY VIEW ##################################
+######################## CATEGORY VIEW ##################################
+######################## CATEGORY VIEW ##################################
+######################## CATEGORY VIEW ##################################
+
 
 class CategoryView(TemplateView):
     template_name = 'categories.html'
@@ -48,6 +63,13 @@ class CategoryView(TemplateView):
 
         return context
     
+
+######################## PRODUCT LIST BY CATEGORY ##################################
+######################## PRODUCT LIST BY CATEGORY ##################################
+######################## PRODUCT LIST BY CATEGORY ##################################
+######################## PRODUCT LIST BY CATEGORY ##################################
+######################## PRODUCT LIST BY CATEGORY ##################################
+
 class ProductListByCategoryView(ListView):
     model = Product
     template_name = 'categories.html'  # Use the same template to display products in a category
@@ -88,11 +110,34 @@ class ProductListByCategoryView(ListView):
         return context
 
 
+######################## CONTACT VIEW ##################################
+######################## CONTACT VIEW ##################################
+######################## CONTACT VIEW ##################################
+######################## CONTACT VIEW ##################################
+######################## CONTACT VIEW ##################################
+
+
 class ContactPage(TemplateView):
   template_name = 'contact.html'
 
+
+######################## ABOUT VIEW ##################################
+######################## ABOUT VIEW ##################################
+######################## ABOUT VIEW ##################################
+######################## ABOUT VIEW ##################################
+######################## ABOUT VIEW ##################################
+
+
 class AboutPage(TemplateView):
   template_name = 'about.html'
+
+
+######################## PRODUCT DETAIL VIEW ##################################
+######################## PRODUCT DETAIL VIEW ##################################
+######################## PRODUCT DETAIL VIEW ##################################
+######################## PRODUCT DETAIL VIEW ##################################
+######################## PRODUCT DETAIL VIEW ##################################
+
 
 class ProductDetailView(TemplateView):
    template_name = 'product_detail.html'
@@ -102,5 +147,18 @@ class ProductDetailView(TemplateView):
       context = super().get_context_data(**kwargs)
       slug = kwargs['slug']
       product = Product.objects.get(slug = slug)
+      product.view_count += 1
+      product.save()
       context['product'] = product
       return context
+   
+
+######################## ADD TO CART VIEW ##################################
+######################## ADD TO CART VIEW ##################################
+######################## ADD TO CART VIEW ##################################
+######################## ADD TO CART VIEW ##################################
+######################## ADD TO CART VIEW ##################################
+
+
+class CartView(TemplateView):
+   template_name = 'cart.html'
