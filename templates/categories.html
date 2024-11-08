@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Categories
+{% endblock title %}
+{% block content %}
+<main>
+  <section class="shop-area pt-100 pb-100">
+      <div class="container">
+          <div class="row">
+              <div class="col-xl-9 col-lg-8">
+                  <div class="shop-top-meta mb-35">
+                      <div class="row">
+                          <div class="col-md-6">
+                              <div class="shop-top-left">
+                                  <ul>
+                                      <h4>Showing results</h4>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  {% if products %}
+                  <div class="row">
+                    {% for product in products %}
+                      <div class="col-xl-4 col-sm-6">
+                          <div class="new-arrival-item text-center mb-50">
+                              <div class="thumb mb-25">
+                                  <a href="shop-details.html"><img src="img/product/n_arrival_product01.jpg" alt=""></a>
+                                  <div class="product-overlay-action">
+                                      <ul>
+                                          <li><a href="cart.html"><i class="far fa-heart"></i></a></li>
+                                          <li><a href="shop-details.html"><i class="far fa-eye"></i></a></li>
+                                      </ul>
+                                  </div>
+                              </div>
+                              <div class="content">
+                                
+                                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid mb-4" style="max-height: 200px; min-height: 200px; object-fit: cover;">
+
+                                  <h5><a href="shop-details.html">{{ product.title }}</a></h5>
+                                  <p>{{ product.description }}</p>
+                              </div>
+                          </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="pagination-wrap">
+                      <ul>
+                          <li class="prev"><a href="#">Prev</a></li>
+                          <li><a href="#">1</a></li>
+                          <li class="active"><a href="#">2</a></li>
+                          <li><a href="#">3</a></li>
+                          <li><a href="#">4</a></li>
+                          <li><a href="#">...</a></li>
+                          <li><a href="#">10</a></li>
+                          <li class="next"><a href="#">Next</a></li>
+                      </ul>
+                  </div>
+                  {% else %}
+                    <p>No products available for this category. Select another one.</p>
+                  {% endif %}
+              </div>
+              <div class="col-xl-3 col-lg-4">
+                  <aside class="shop-sidebar">
+                    {% include "right_bar/search.html" %}
+                    {% include "right_bar/categories_list.html" %}
+                  </aside>
+              </div>
+          </div>
+      </div>
+  </section>
+</main>
+{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% load static %}
+{% block title %}
+  Home
+{% endblock title %} {% block content %}
+<main>
+
+    <!-- new-arrival-area -->
+    <section class="new-arrival-area pt-95 pb-45">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-4 col-lg-6">
+                    <div class="section-title title-style-two text-center mb-50">
+                        <h3 class="title">Products</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row new-arrival-active">
+                {% for p in products %}
+                <div class="col-xl-3 col-lg-4 col-sm-6 grid-item grid-sizer mb-3 cat-two">
+                    <div class="col">
+                        <div class="features-product-item">
+                            <div class="features-product-thumb">
+                                <div class="discount-tag">-{{ p.get_discount_percentage|floatformat:0 }}%</div>
+                                <a href="{% url 'product_detail' p.slug %}">
+                                    <img src="{{ p.image.url }}" alt="{{ p.title }}" class="img-fluid" style="
+                      max-height: 200px;
+                      min-height: 200px;
+                      object-fit: cover;
+                    " />
+                                </a>
+                                <div class="product-overlay-action">
+                                    <ul>
+                                        <li>
+                                            <a href="cart.html"><i class="far fa-heart"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="shop-sidebar.html"><i class="far fa-eye"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="features-product-content">
+                                <div class="rating">
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <h5><a href="{% url 'product_detail' p.slug %}">{{ p.title }}</a></h5>
+
+                                <p class="price">
+                                    Price: <strike>Rs {{ p.marked_price }}</strike> Rs {{ p.selling_price }}
+                                </p>
+                            </div>
+                            <div class="features-product-cart">
+                                <a href="cart.html">add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- new-arrival-area-end -->
+</main>
+<!-- main-area-end -->
+{% endblock content %}
+
+<!-- footer-area -->
