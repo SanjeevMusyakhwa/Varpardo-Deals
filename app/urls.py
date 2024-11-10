@@ -12,5 +12,7 @@ urlpatterns = [
     path('product/<slug:slug>/',views.ProductDetailView.as_view(), name='product_detail' ),
 
     ############## ADD TO CART  ################
-    path('cart/<int:product_id>/', views.CartView.as_view(), name='cart'),
+    path('cart/', views.CartView.as_view(), name='cart_view'),
+    path('add_to_cart/<int:product_id>/', views.AddToCartView.as_view(), name='add_to_cart'),
+    path('manage_cart/<int:product_id>/', views.ManageCart.as_view(), name='manage_cart'),
 ]
