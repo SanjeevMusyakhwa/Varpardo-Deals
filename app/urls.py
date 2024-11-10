@@ -1,6 +1,7 @@
 
 from django.urls import path
 from app import views
+app_name = 'app'
 urlpatterns = [
     path('', views.HomePage.as_view(), name='home'),
     path('contact/', views.ContactPage.as_view(), name='contact'),
@@ -15,5 +16,9 @@ urlpatterns = [
     path('cart/', views.CartView.as_view(), name='cart_view'),
     path('add_to_cart/<int:product_id>/', views.AddToCartView.as_view(), name='add_to_cart'),
     path('manage_cart/<int:cp_id>/', views.ManageCart.as_view(), name='manage_cart'),
-    path('empty_cart/', views.EmptyCart.as_view(), name='empty_cart')
+    path('empty_cart/', views.EmptyCart.as_view(), name='empty_cart'),
+    path('checkout/', views.Checkout.as_view(), name='checkout'),
+
+     ############## REGISTERATION ######################
+     path('register/', views.CustomerRegister.as_view(), name='customerreg'),
 ]

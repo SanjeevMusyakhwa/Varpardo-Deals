@@ -73,7 +73,7 @@ class Order(models.Model):
   shipping_address = models.CharField(max_length=200)
   mobile = models.CharField(max_length=10)
   email = models.EmailField(null= True,blank=True)
-  sub_total = models.PositiveIntegerField()
+  subtotal = models.PositiveIntegerField()
   discount = models.PositiveIntegerField()
   total = models.PositiveIntegerField()
   order_status = models.CharField(max_length=50, choices=ORDER_STATUS)

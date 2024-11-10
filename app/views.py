@@ -1,10 +1,14 @@
-from urllib import request
+
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import TemplateView, ListView, View
+from django.views.generic import TemplateView, ListView, View, CreateView
 from app.models import *
 from django.db.models import Count, Q
 from .models import Category
 from django.contrib import messages
+from app.forms import CheckoutForm
+from django.urls import reverse_lazy
+
+
 
 ######################## HOME VIEW ##################################
 ######################## HOME VIEW ##################################
@@ -179,25 +183,6 @@ class ProductDetailView(TemplateView):
 ######################## ADD TO CART VIEW ##################################
 ######################## ADD TO CART VIEW ##################################
 ######################## ADD TO CART VIEW ##################################
-
-
-class CartView(TemplateView):
-    template_name = "cart.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        cart_id = self.request.session.get("cart_id", None)
-
-        # Retrieve the cart if it exists
-        if cart_id:
-            cart = Cart.objects.get(id=cart_id)
-        else:
-            cart = None
-
-        context["cart"] = cart
-        return context
-
-
 class AddToCartView(View):
     def get(self, request, product_id):
         # Get or create the cart ID in the session
@@ -243,6 +228,35 @@ class AddToCartView(View):
         return redirect("cart_view")
 
 
+######################## CART VIEW ##################################
+######################## CART VIEW ##################################
+######################## CART VIEW ##################################
+######################## CART VIEW ##################################
+######################## CART VIEW ##################################
+
+class CartView(TemplateView):
+    template_name = "cart.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart_id = self.request.session.get("cart_id", None)
+
+        # Retrieve the cart if it exists
+        if cart_id:
+            cart = Cart.objects.get(id=cart_id)
+        else:
+            cart = None
+
+        context["cart"] = cart
+        return context
+
+
+######################## MANAGE CART ##################################
+######################## MANAGE CART ##################################
+######################## MANAGE CART ##################################
+######################## MANAGE CART ##################################
+######################## MANAGE CART ##################################
+
 class ManageCart(View):
     def get(self, request, *args, **kwargs):
         cp_id = self.kwargs["cp_id"]
@@ -283,6 +297,12 @@ class ManageCart(View):
         return redirect("cart_view")
 
 
+######################## EMPTY CART ##################################
+######################## EMPTY CART ##################################
+######################## EMPTY CART ##################################
+######################## EMPTY CART ##################################
+######################## EMPTY CART ##################################
+
 class EmptyCart(View):
     def get(self, request, *args, **kwargs):
         cart_id = request.session.get("cart_id", None)
@@ -298,3 +318,65 @@ class EmptyCart(View):
         else:
             messages.info(request, "There is no cart to empty.")
         return redirect("cart_view")
+    
+
+######################## CHECKOUT ##################################
+######################## CHECKOUT ##################################
+######################## CHECKOUT ##################################
+######################## CHECKOUT ##################################
+######################## CHECKOUT ##################################
+
+class Checkout(CreateView):
+    template_name = 'checkout.html'
+    form_class = CheckoutForm
+    success_url = reverse_lazy('home')
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart_id = self.request.session.get('cart_id', None)
+        if cart_id:
+            try:
+                cart_obj = Cart.objects.get(id=cart_id)
+                if not cart_obj.cartproduct_set.exists():
+                    messages.info(self.request, "Your cart is empty.")
+                    cart_obj = None
+            except Cart.DoesNotExist:
+                cart_obj = None
+        else:
+            cart_obj = None
+        context['cart'] = cart_obj
+        return context
+    
+
+######################## PLACE ORDER ##################################
+######################## PLACE ORDER ##################################
+######################## PLACE ORDER ##################################
+######################## PLACE ORDER ##################################
+######################## PLACE ORDER ##################################
+
+    def form_valid(self, form):
+        cart_id = self.request.session.get('cart_id')
+        print(f"Cart ID from session: {cart_id}")
+        print(Cart.objects.filter(id=3).exists())
+        if cart_id:
+            cart_obj = Cart.objects.get(id=cart_id)
+            form.instance.cart = cart_obj
+            form.instance.subtotal = cart_obj.total
+            form.instance.discount = 0  # Add logic here if you have a discount system
+            form.instance.total = cart_obj.total  # Adjust as needed for discounts
+            form.instance.order_status = 'Order Received'
+            del self.request.session['cart_id']
+        else:
+            return redirect('home')  # Redirect if no cart ID is found in session
+
+        return super().form_valid(form)
+    
+class CustomerRegister(CreateView):
+    template_name ='register.html'
+    form_class = CustomerRegisterForm
+    success_url = reverse_lazy('app:home')
+
+    
+
+
