@@ -1,119 +1,130 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}
-  Cart
-{% endblock title %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block title %} Cart {% endblock title %} {% block content %}
 <main>
+    <!-- cart-area -->
+    <div class="cart-area pt-100 pb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
 
-  <!-- cart-area -->
-  <div class="cart-area pt-100 pb-100">
-      <div class="container">
-          <div class="row">
-              <div class="col-12">
-                  <div class="cart-wrapper">
-                      <div class="table-responsive">
-                          <table class="table mb-0">
-                              <thead>
-                                  <tr>
-                                      <th class="product-thumbnail"></th>
-                                      <th class="product-name">Product</th>
-                                      <th class="product-price">Price</th>
-                                      <th class="product-quantity">Quantity</th>
-                                      <th class="product-subtotal">Subtotal</th>
-                                      <th class="product-delete"></th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                {% for cart in cart.cartproduct_set.all %}
-                                  <tr>
-                                      <td class="product-thumbnail">
-                                          <a href="shop-details.html">
-                                              <img src="{{ cart.product.image.url }}" alt="{{ cart.product.title }}">
-                                          </a>
-                                      </td>
-                                      <td class="product-name">
-                                          <h4><a href="shop-details.html">{{ cart.product.title }}</a></h4>
-                                      </td>
-                                      <td class="product-price">${{ cart.rate }}</td>
-                                      <td class="product-quantity">
-                                          <div class="cart-plus-minus">
-                                              <form action="#" class="num-block">
-                                                  <input type="text" class="in-num" value="{{ cart.quantity }}" readonly>
-                                                  <div class="qtybutton-box">
-                                                    <span class="plus">
-                                                        <a href="{% url 'manage_cart' cart.product.id %}?action=inc">
-                                                            <img src="{% static 'img/icon/plus.png' %}" alt="Increase">
-                                                        </a>
-                                                    </span>
-                                                    <span class="minus dis">
-                                                        <a href="{% url 'manage_cart' cart.product.id %}?action=dec">
-                                                            <img src="{% static 'img/icon/minus.png' %}" alt="Decrease">
-                                                        </a>
-                                                    </span>
-                                                </div>
-                                              </form>
-                                          </div>
-                                      </td>
-                                      <td class="product-subtotal"><span>${{ cart.subtotal }}</span></td>
-                                      <td class="product-delete">
-                                          <a href="{% url 'manage_cart' cart.id %}?action=inc">
-                                              <i class="flaticon-trash"></i>
-                                          </a>
-                                      </td>
-                                  </tr>
-                                {% endfor %}
-                              </tbody>
-                          </table>
-                      </div>
-                      <div class="shop-cart-bottom mt-20">
-                          <div class="cart-coupon">
-                              <form action="#">
-                                  <input type="text" placeholder="Enter Coupon Code...">
-                                  <button class="btn">Apply Coupon</button>
-                              </form>
-                          </div>
-                          <div class="continue-shopping">
-                              <a href="shop.html" class="btn">Update Shopping</a>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="cart-total pt-95">
-                      <h3 class="title">Cart Totals</h3>
-                      <div class="shop-cart-widget">
-                          <form action="#">
-                              <ul>
-                                  <li class="sub-total">
-                                      <span>Subtotal</span> Rs {{ cart.total }}
-                                  </li>
-                                  <li>
-                                      <span>Shipping</span>
-                                      <div class="shop-check-wrap">
-                                          <div class="custom-control custom-checkbox">
-                                              <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                              <label class="custom-control-label" for="customCheck1">Flat Rate: $15</label>
-                                          </div>
-                                          <div class="custom-control custom-checkbox">
-                                              <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                              <label class="custom-control-label" for="customCheck2">Free Shipping</label>
-                                          </div>
-                                          <a href="#" class="calculate">Calculate Shipping</a>
-                                      </div>
-                                  </li>
-                                  <li class="cart-total-amount">
-                                      <span>Total</span> 
-                                      <span class="amount">${{ cart.total }}</span>
-                                  </li>
-                              </ul>
-                              <a href="" class="btn">Proceed to Checkout</a>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- cart-area-end -->
+                    <div class="cart-wrapper">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
 
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail"></th>
+                                        <th class="product-name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Subtotal</th>
+                                        <th class="product-delete"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if empty_cart_message %}
+                                    <div class="alert alert-info">
+                                        {{ empty_cart_message }}
+                                    </div>
+                                    {% endif %}
+                                    {% if cart and cart.cartproduct_set.all %}
+                                    {% for cart in cart.cartproduct_set.all %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="shop-details.html">
+                                                <img src="{{ cart.product.image.url }}"
+                                                    alt="{{ cart.product.title }}" />
+                                            </a>
+                                        </td>
+                                        <td class="product-name">
+                                            <h4>
+                                                <a href="shop-details.html">{{ cart.product.title }}</a>
+                                            </h4>
+                                        </td>
+                                        <td class="product-price">Rs {{ cart.rate }}</td>
+                                        <td class="product-quantity">
+                                            <div class="cart-plus-minus">
+                                                <form action="" class="num-block">
+                                                    <input type="text" class="in-num" value="{{ cart.quantity }}" />
+                                                    <div class="qtybutton-box">
+                                                        <a href="{% url 'manage_cart' cart.id %}?action=inc"
+                                                            class="qty-button plus">+</a>
+                                                        <a href="{% url 'manage_cart' cart.id %}?action=dec"
+                                                            class="qty-button minus">-</a>
+
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </td>
+
+                                        <td class="product-subtotal">
+                                            <span>Rs {{ cart.subtotal }}</span>
+                                        </td>
+                                        <td class="product-delete">
+                                            <a href="{% url 'manage_cart' cart.id %}?action=rmv">
+                                                <i class="flaticon-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <div class="alert alert-info">There are no products in the cart.</div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="shop-cart-bottom mt-20">
+                            {% if cart.cartproduct_set.all %}
+                            <a href="{% url 'empty_cart' %}" class="btn btn-primary">Empty Cart</a>
+                            {% endif %}
+
+
+
+                            <a href="{% url 'home' %}" class="btn">Update Shopping</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-total pt-95">
+                    <h3 class="title">Cart Totals</h3>
+                    <div class="shop-cart-widget">
+                        <form action="#">
+                            <ul>
+                                <li class="sub-total">
+                                    <span>Subtotal</span> Rs {{ cart.total }}
+                                </li>
+                                <li>
+                                    <span>Shipping</span>
+                                    <div class="shop-check-wrap">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1" />
+                                            <label class="custom-control-label" for="customCheck1">Flat Rate:
+                                                Rs 15</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck2" />
+                                            <label class="custom-control-label" for="customCheck2">Free
+                                                Shipping</label>
+                                        </div>
+                                        <a href="#" class="calculate">Calculate Shipping</a>
+                                    </div>
+                                </li>
+                                <li class="cart-total-amount">
+                                    <span>Total</span>
+                                    <span class="amount">Rs {{ cart.total }}</span>
+                                </li>
+                            </ul>
+                            <a href="" class="btn">Proceed to Checkout</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- cart-area-end -->
 </main>
 {% endblock content %}
