@@ -21,7 +21,7 @@
                                     
                                   {% endif %}
                       </div>
-                      <form action="{% url 'app:admin_login' %}" class="contact-form" method="post">
+                      <form action="{% url 'app:adminlogin' %}" class="contact-form" method="post">
                         {% csrf_token %}
                         {{ form }}
                           <div class="row">

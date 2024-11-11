@@ -30,11 +30,12 @@ urlpatterns = [
 
 
      ################################################## ADMIN PANEL ######################################################
-     path('admin_login/', views.AdminLogin.as_view(), name='admin_login'),
+     path('adminlogin/', views.AdminLogin.as_view(), name='adminlogin'),
      path('admin_home/', views.AdminHomePage.as_view(), name='adminhome'),
      path('adminorder_detail/<int:pk>/', views.AdminOrderDetail.as_view(), name='adminorderdetail'),
      path('adminallorder/', views.AdminAllOrder.as_view(), name='adminallorder'),
      path('adminorder-<int:pk>-change/', views.AdminOrderStatusChange.as_view(), name='adminorderchange'),
-     
+     path('adminlogout/', views.AdminLogout.as_view(), name='adminlogout'),
+
 
 ]

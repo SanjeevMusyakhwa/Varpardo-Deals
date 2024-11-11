@@ -541,7 +541,8 @@ class AdminRequiredMixin(object):
             return redirect('/admin_login/')
         return super().dispatch(request, *args, **kwargs)
 
-class AdminLogin(AdminRequiredMixin,FormView):
+# class AdminLogin(AdminRequiredMixin, FormView):
+class AdminLogin(FormView):  # Remove AdminRequiredMixin for testing
     template_name = 'AdminPanel/adminlogin.html'
     form_class = AdminLoginForm
     success_url = reverse_lazy('app:adminhome')
@@ -549,12 +550,13 @@ class AdminLogin(AdminRequiredMixin,FormView):
     def form_valid(self, form):
         uname = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        user = authenticate(username = uname, password = password)
+        user = authenticate(username=uname, password=password)
         if user is not None and Admin.objects.filter(user=user).exists():
             login(self.request, user)
         else:
             return render(self.request, self.template_name, {'form': self.form_class, "error": "Please Check the Username and Password"})
         return super().form_valid(form)
+
 
 
 class AdminHomePage(AdminRequiredMixin,TemplateView):
@@ -592,6 +594,11 @@ class AdminOrderStatusChange(AdminRequiredMixin,View):
         order_obj.order_status = new_status
         order_obj.save()
         return redirect(reverse_lazy('app:adminorderdetail', kwargs={'pk': order_id}))
+    
+class AdminLogout(View):
+    def get(self,request):
+        logout(request)
+        return redirect('app:adminlogin')
     
 
 

@@ -31,22 +31,16 @@
                                 <div class="product-overlay-action">
                                     <ul>
                                         <li>
-                                            <a href="cart.html"><i class="far fa-heart"></i></a>
+                                            <a href="{% url 'app:add_to_cart' p.id %}"><i class="far fa-heart"></i></a>
                                         </li>
                                         <li>
-                                            <a href="shop-sidebar.html"><i class="far fa-eye"></i></a>
+                                            <a href="{% url 'app:product_detail' p.slug %}"><i class="far fa-eye"></i></a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="features-product-content">
-                                <div class="rating">
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
+                                
                                 <h5><a href="{% url 'app:product_detail' p.slug %}">{{ p.title }}</a></h5>
 
                                 <p class="price">
