@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% load static %}
+{% extends "base.html" %} {% load static %} {% load humanize %}
 {% block title %}
   Home
 {% endblock title %} {% block content %}
@@ -50,7 +50,7 @@
                                 <h5><a href="{% url 'app:product_detail' p.slug %}">{{ p.title }}</a></h5>
 
                                 <p class="price">
-                                    Price: <strike>Rs {{ p.marked_price }}</strike> Rs {{ p.selling_price }}
+                                    Price: <strike>Rs {{ p.marked_price|intcomma }}</strike> Rs {{ p.selling_price|intcomma }}
                                 </p>
                             </div>
                             <div class="features-product-cart">

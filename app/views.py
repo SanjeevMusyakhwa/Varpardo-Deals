@@ -1,6 +1,6 @@
 
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import TemplateView, ListView, View, CreateView, FormView
+from django.views.generic import TemplateView, ListView, View, CreateView, FormView, DetailView
 from app.models import *
 from django.db.models import Count, Q
 from .models import Category
@@ -8,10 +8,19 @@ from django.contrib import messages
 from app.forms import CheckoutForm, CustomerRegisterForm, CustomerLoginForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login,logout
-from django.db import IntegrityError
 
 
 
+class AppMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        cart_id = request.session.get('cart_id')
+        if cart_id:
+            cart_obj = Cart.objects.get(id = cart_id)
+            if request.user.is_authenticated and request.user.customer:
+                cart_obj.customer = request.user.customer
+                cart_obj.save()
+        return super().dispatch(request, *args, **kwargs)
+    
 ######################## HOME VIEW ##################################
 ######################## HOME VIEW ##################################
 ######################## HOME VIEW ##################################
@@ -19,7 +28,7 @@ from django.db import IntegrityError
 ######################## HOME VIEW ##################################
 
 
-class HomePage(TemplateView):
+class HomePage(AppMixin,TemplateView):
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
@@ -36,7 +45,7 @@ class HomePage(TemplateView):
 ######################## CATEGORY VIEW ##################################
 
 
-class CategoryView(TemplateView):
+class CategoryView(AppMixin,TemplateView):
     template_name = "categories.html"
 
     def get_context_data(self, **kwargs):
@@ -86,7 +95,7 @@ class CategoryView(TemplateView):
 ######################## PRODUCT LIST BY CATEGORY ##################################
 
 
-class ProductListByCategoryView(ListView):
+class ProductListByCategoryView(AppMixin,ListView):
     model = Product
     template_name = (
         "categories.html"  # Use the same template to display products in a category
@@ -145,7 +154,7 @@ class ProductListByCategoryView(ListView):
 ######################## CONTACT VIEW ##################################
 
 
-class ContactPage(TemplateView):
+class ContactPage(AppMixin,TemplateView):
     template_name = "contact.html"
 
 
@@ -156,7 +165,7 @@ class ContactPage(TemplateView):
 ######################## ABOUT VIEW ##################################
 
 
-class AboutPage(TemplateView):
+class AboutPage(AppMixin,TemplateView):
     template_name = "about.html"
 
 
@@ -167,7 +176,7 @@ class AboutPage(TemplateView):
 ######################## PRODUCT DETAIL VIEW ##################################
 
 
-class ProductDetailView(TemplateView):
+class ProductDetailView(AppMixin,TemplateView):
     template_name = "product_detail.html"
 
     def get_context_data(self, **kwargs):
@@ -185,7 +194,7 @@ class ProductDetailView(TemplateView):
 ######################## ADD TO CART VIEW ##################################
 ######################## ADD TO CART VIEW ##################################
 ######################## ADD TO CART VIEW ##################################
-class AddToCartView(View):
+class AddToCartView(AppMixin,View):
     def get(self, request, product_id):
         # Get or create the cart ID in the session
         cart_id = request.session.get("cart_id", None)
@@ -236,7 +245,7 @@ class AddToCartView(View):
 ######################## CART VIEW ##################################
 ######################## CART VIEW ##################################
 
-class CartView(TemplateView):
+class CartView(AppMixin,TemplateView):
     template_name = "cart.html"
 
     def get_context_data(self, **kwargs):
@@ -259,7 +268,7 @@ class CartView(TemplateView):
 ######################## MANAGE CART ##################################
 ######################## MANAGE CART ##################################
 
-class ManageCart(View):
+class ManageCart(AppMixin,View):
     def get(self, request, *args, **kwargs):
         cp_id = self.kwargs["cp_id"]
         action = request.GET.get("action")
@@ -305,7 +314,7 @@ class ManageCart(View):
 ######################## EMPTY CART ##################################
 ######################## EMPTY CART ##################################
 
-class EmptyCart(View):
+class EmptyCart(AppMixin,View):
     def get(self, request, *args, **kwargs):
         cart_id = request.session.get("cart_id", None)
         if cart_id:
@@ -328,12 +337,19 @@ class EmptyCart(View):
 ######################## CHECKOUT ##################################
 ######################## CHECKOUT ##################################
 
-class Checkout(CreateView):
+class Checkout(AppMixin,CreateView):
     template_name = 'checkout.html'
     form_class = CheckoutForm
     success_url = reverse_lazy('app:home')
     
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect('/login/?next=/Checkout/')
+        return super().dispatch(request, *args, **kwargs)
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart_id = self.request.session.get('cart_id', None)
@@ -375,10 +391,11 @@ class Checkout(CreateView):
         return super().form_valid(form)
     
 
-
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.contrib import messages
+######################## Customer Registration ##################################
+######################## Customer Registration ##################################
+######################## Customer Registration ##################################
+######################## Customer Registration ##################################
+######################## Customer Registration ##################################
 
 class CustomerRegister(CreateView):
     template_name = 'register.html'
@@ -399,13 +416,34 @@ class CustomerRegister(CreateView):
             # Add a success message and redirect
 
         return redirect(self.success_url)
+    
+    def get_success_url(self):
+    # If a 'next' parameter is provided in the URL, redirect there
+        if "next" in self.request.GET:
+            next_url = self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
         
-            
+
+######################## Customer Logout ##################################
+######################## Customer Logout ##################################
+######################## Customer Logout ##################################
+######################## Customer Logout ##################################
+######################## Customer Logout ##################################         
+
 class CustomerLogout(View):
     def get(self,request):
         logout(request)
         return redirect('app:home')
-    
+
+
+######################## Customer Login ##################################
+######################## Customer Login ##################################
+######################## Customer Login ##################################
+######################## Customer Login ##################################
+######################## Customer Login ##################################
+
 class CustomerLogin(FormView):
     template_name = 'login.html'
     form_class = CustomerLoginForm
@@ -421,6 +459,48 @@ class CustomerLogin(FormView):
         else:
             return render(self.request, 'login.html', {'form': self.form_class, "error": "Please Check the Username and Password"})
         return super().form_valid(form)
+    
+    def get_success_url(self):
+    # If a 'next' parameter is provided in the URL, redirect there
+        if "next" in self.request.GET:
+            next_url = self.request.GET.get("next")
+            return next_url
+        else:
+            return self.success_url
+        
+class CustomerProfile(TemplateView):
+    template_name = 'profile.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            pass
+        else:
+            return redirect('/login/?next=/profile/')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        customer = self.request.user.customer
+        orders = Order.objects.filter(cart__customer=customer).order_by('-id')
+        context['orders'] = orders
+        context['customer'] = customer
+        return context
+class CustomerOrderDetail(DetailView):
+    template_name = 'orderdetail.html'
+    model = Order
+    context_object_name = 'order_obj'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.customer:
+            order_id = self.kwargs['pk']
+            order = Order.objects.get(id = order_id)
+            if request.user.customer != order.cart.customer:
+                return redirect('app:customerprofile')
+        else:
+            return redirect('/login/?next=/profile/')
+        return super().dispatch(request, *args, **kwargs)
+    
     
 
 

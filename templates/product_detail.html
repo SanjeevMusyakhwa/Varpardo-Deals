@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block title %}
   {{ product.title }}
 {% endblock title %}
@@ -59,7 +60,7 @@
                           <i class="fas fa-star"></i>
                       </div>
                       <p class="style-name">Slug Name : {{ product.slug }}</p>
-                      <div class="price">Price: <strike>Rs {{ product.marked_price }}</strike> Rs {{ product.selling_price }}</div>
+                      <div class="price">Price: <strike>Rs {{ product.marked_price|intcomma }}</strike> Rs {{ product.selling_price|intcomma }}</div>
                       <div class="product-details-info">
                           <span>Warranty : {{ product.warranty }} months</span>
                           <span>Return Policy: {{ product.return_policy }} peroid</span>

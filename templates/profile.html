@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Profile
+{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <div class="row mt-5 mb-5">
+      <!-- Detail Information Section -->
+      <div class="col-lg-6 col-md-6">
+        <aside class="checkout-sidebar">
+          <h6 class="title">Detail Information</h6>
+          <div class="shop-cart-widget">
+            <ul>
+              <li class="sub-total"><h5><span>Name: </span>{{ customer.full_name }}</h5></li>
+              <li class="sub-total"><h5><span>Username: </span>{{ customer.user.username }}</h5></li>
+              <li class="sub-total"><h5><span>Email: </span>{{ customer.user.email }}</h5></li>
+              <li class="sub-total"><h5><span>Joined on: </span>{{ customer.joined_on }}</h5></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Previous Orders Section -->
+      <div class="col-lg-6 col-md-6">
+        <aside class="checkout-sidebar">
+          <h6 class="title">Previous Orders</h6>
+          <div class="shop-cart-widget">
+            <table class="table mb-0">
+              <thead>
+                  <tr>
+                      <th class="product-thumbnail">S.N</th>
+                      <th class="product-name">Order ID</th>
+                      <th class="product-price">Amount</th>
+                      <th class="product-quantity">Ordered On</th>
+                      <th class="product-subtotal">Status</th>
+                  </tr>
+                  <tbody>
+                    {% for order in orders %}
+                      <tr>
+                        <td class="product-name">
+                          <h4>
+                            {{ forloop.counter }}
+                          </h4>
+                        </td>
+                        <td class="product-name">
+                          <h4>
+                            <a href="{% url 'app:customerorderdetail' order.id %}">
+                              #order_{{ order.id }}
+                            </a>
+                          </h4>
+                        </td>
+                        <td class="product-name">
+                          <h4>
+                            Rs {{ order.total }}
+                          </h4>
+                        </td>
+                        <td class="product-name">
+                          <h4>
+                            {{ order.created_at|timesince }} ago
+                          </h4>
+                        </td>
+                        <td class="product-name">
+                          <h4>
+                            {{ order.order_status }}
+                          </h4>
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="5" class="text-center">
+                          <h4>No orders found.</h4>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                  
+                  
+              </thead>
+            </table>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

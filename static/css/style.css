@@ -430,6 +430,7 @@ label {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    width: 500px;
 }
 .header-top-action > ul > li {
 	position: relative;

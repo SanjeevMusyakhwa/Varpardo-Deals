@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% load static %} {% block title %} Cart {% endblock title %} {% block content %}
+{% extends "base.html" %} {% load static %} {% load humanize %} {% block title %} Cart {% endblock title %} {% block content %}
 <main>
     <div class="cart-area pt-100 pb-100">
         <div class="container">
@@ -36,7 +36,7 @@
                                                         <a href="shop-details.html">{{ cart.product.title }}</a>
                                                     </h4>
                                                 </td>
-                                                <td class="product-price">Rs {{ cart.rate }}</td>
+                                                <td class="product-price">Rs {{ cart.rate|intcomma }}</td>
                                                 <td class="product-quantity">
                                                     <div class="cart-plus-minus">
                                                         <form action="" class="num-block">
@@ -49,7 +49,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="product-subtotal">
-                                                    <span>Rs {{ cart.subtotal }}</span>
+                                                    <span>Rs {{ cart.subtotal|intcomma }}</span>
                                                 </td>
                                                 <td class="product-delete">
                                                     <a href="{% url 'app:manage_cart' cart.id %}?action=rmv">
@@ -59,7 +59,7 @@
                                             </tr>
                                         {% endfor %}
                                         <td colspan="6" class="text-end">
-                                            <div><i>The Total Price of the product in the Cart : <strong> {{ cart.total }}</strong></i></div>
+                                            <div><i>The Total Price of the product in the Cart : <strong> {{ cart.total|intcomma }}</strong></i></div>
                                         </td>
                                     {% else %}
                                         <tr>
@@ -70,7 +70,7 @@
                                     {% endif %}
                                 </tbody>
                             </table>
-                            <h3 class="title text-center mt-2">Cart Totals : {{ cart.total }}</h3>
+                            <h3 class="title text-center mt-2">Cart Totals : {{ cart.total|intcomma }}</h3>
                         </div>
                         <div class="shop-cart-bottom mt-20">
                             <div class="cart-total pt-15">
