@@ -27,4 +27,9 @@ urlpatterns = [
      path('profile/', views.CustomerProfile.as_view(), name='customerprofile'),
      path('profile/order-<int:pk>/', views.CustomerOrderDetail.as_view(), name='customerorderdetail'),
 
+
+     ################################################## ADMIN PANEL ######################################################
+     path('admin_login/', views.AdminLogin.as_view(), name='admin_login'),
+     path('admin_home/', views.AdminHomePage.as_view(), name='adminhome'),
+
 ]

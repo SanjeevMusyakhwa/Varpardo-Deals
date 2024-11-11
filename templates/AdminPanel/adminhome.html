@@ -1,0 +1,62 @@
+{% extends "AdminPanel/adminbase.html" %}
+{% load humanize %}
+{% block title %}
+  Admin Home
+{% endblock title %}
+{% block content %}
+<div class="container">
+  <div class="row">
+      <div class="col-12">
+          <div class="cart-wrapper">
+              <div class="table-responsive">
+                  <table class="table mb-0">
+                      <thead>
+                          <tr>
+                              <th class="product-thumbnail">S.N</th>
+                              <th class="product-subtotal">Ordered ID</th>
+                              <th class="product-name">Customer</th>
+                              <th class="product-price">Ordered On</th>
+                              <th class="product-quantity">Amount</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                              {% for order in pendingorders %}
+                                  <tr>
+                                      <td class="product-name">
+                                          <h4>
+                                              {{ forloop.counter }}
+                                          </h4>
+                                      </td>
+                                      <td class="product-name">
+                                        <h4>
+                                            <a href="">#ORDER_{{ order.id }}</a>
+                                        </h4>
+                                    </td>
+                                    <td class="product-name">
+                                      <h4>
+                                          {{ order.ordered_by }}
+                                      </h4>
+                                  </td>
+                                  <td class="product-name">
+                                    <h4>
+                                        {{ order.created_at }}
+                                    </h4>
+                                </td>
+                                <td class="product-price">
+                                  <h4>
+                                      Rs {{ order.total }}
+                                  </h4>
+                              </td>
+                                    
+                              {% endfor %}
+                             
+                          
+                      </tbody>
+                  </table>
+              </div>
+            
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock content %}

@@ -5,7 +5,7 @@ from app.models import *
 from django.db.models import Count, Q
 from .models import Category
 from django.contrib import messages
-from app.forms import CheckoutForm, CustomerRegisterForm, CustomerLoginForm
+from app.forms import CheckoutForm, CustomerRegisterForm, CustomerLoginForm, AdminLoginForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login,logout
 
@@ -454,7 +454,7 @@ class CustomerLogin(FormView):
         uname = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(username = uname, password = password)
-        if user is not None and user.customer:
+        if user is not None and Customer.objects.filter(user=user).exists():
             login(self.request, user)
         else:
             return render(self.request, 'login.html', {'form': self.form_class, "error": "Please Check the Username and Password"})
@@ -472,7 +472,7 @@ class CustomerProfile(TemplateView):
     template_name = 'profile.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.customer:
+        if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
             pass
         else:
             return redirect('/login/?next=/profile/')
@@ -492,7 +492,7 @@ class CustomerOrderDetail(DetailView):
     context_object_name = 'order_obj'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.customer:
+        if request.user.is_authenticated and Customer.objects.filter(user=request.user).exists():
             order_id = self.kwargs['pk']
             order = Order.objects.get(id = order_id)
             if request.user.customer != order.cart.customer:
@@ -500,6 +500,42 @@ class CustomerOrderDetail(DetailView):
         else:
             return redirect('/login/?next=/profile/')
         return super().dispatch(request, *args, **kwargs)
+    
+
+
+###################################################################### Admin Login ###############################################################
+class AdminLogin(FormView):
+    template_name = 'AdminPanel/adminlogin.html'
+    form_class = AdminLoginForm
+    success_url = reverse_lazy('app:adminhome')
+
+    def form_valid(self, form):
+        uname = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username = uname, password = password)
+        if user is not None and Admin.objects.filter(user=user).exists():
+            login(self.request, user)
+        else:
+            return render(self.request, self.template_name, {'form': self.form_class, "error": "Please Check the Username and Password"})
+        return super().form_valid(form)
+
+
+class AdminHomePage(TemplateView):
+    template_name = 'AdminPanel/adminhome.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
+            pass
+        else:
+            return redirect('/admin_login/?next=/profile/')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pendingorders'] = Order.objects.filter(
+            order_status ='Order Received'
+        )
+        return context
     
     
 
