@@ -12,9 +12,9 @@
                   <div class="checkout-wrap">
                       <div class="checkout-top">
                           <h5 class="title">Billing details</h5>
-                          <a href="{% url 'cart_view' %}" class="back"><-- Back to Cart</a>
+                          <a href="{% url 'app:cart_view' %}" class="back"><-- Back to Cart</a>
                       </div>
-                      <form action="{% url 'checkout' %}" class="checkout-form" method="post">
+                      <form action="{% url 'app:checkout' %}" class="checkout-form" method="post">
                         {% csrf_token %}
                           <div class="row">
                               <div class="col-sm-12">

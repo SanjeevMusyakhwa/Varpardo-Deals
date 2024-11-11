@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}
+  Register
+{% endblock title %}
+{% block content %}
+<main>
+
+           
+
+  <!-- contact-area -->
+  <section class="contact-area pt-100 pb-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="contact-wrap">
+              <div class="section-title title-style-three mb-30">
+                <span class="sub-title">Login</span>
+                <h2 class="title">Login</h2>
+                {% if error %}
+                                  <h5 style="color: red;" class="text-center mt-3">{{error}}</h5>
+                                    
+                                  {% endif %}
+                      </div>
+                      <form action="{% url 'app:customerlogin' %}" class="contact-form" method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                          <div class="row">
+                          <button class="btn" type="submit">Login as a Customer</button>
+                          </div>
+                          
+                          <div class="row mt-3 ">
+                            <h5>Don't Have an account ? Please <a href="{% url 'app:customerregistration' %}">Register</a></h5>
+                            </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</main>
+{% endblock content %}

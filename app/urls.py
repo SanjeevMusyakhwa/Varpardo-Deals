@@ -20,5 +20,7 @@ urlpatterns = [
     path('checkout/', views.Checkout.as_view(), name='checkout'),
 
      ############## REGISTERATION ######################
-     path('register/', views.CustomerRegister.as_view(), name='customerreg'),
+     path('register/', views.CustomerRegister.as_view(), name='customerregistration'),
+     path('logout/', views.CustomerLogout.as_view(), name='customerlogout'),
+     path('login/', views.CustomerLogin.as_view(), name='customerlogin'),
 ]

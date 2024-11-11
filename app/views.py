@@ -1,12 +1,14 @@
 
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views.generic import TemplateView, ListView, View, CreateView
+from django.views.generic import TemplateView, ListView, View, CreateView, FormView
 from app.models import *
 from django.db.models import Count, Q
 from .models import Category
 from django.contrib import messages
-from app.forms import CheckoutForm
+from app.forms import CheckoutForm, CustomerRegisterForm, CustomerLoginForm
 from django.urls import reverse_lazy
+from django.contrib.auth import authenticate, login,logout
+from django.db import IntegrityError
 
 
 
@@ -225,7 +227,7 @@ class AddToCartView(View):
         cart_obj.save()
 
         # Redirect to the cart page or wherever you want
-        return redirect("cart_view")
+        return redirect("app:cart_view")
 
 
 ######################## CART VIEW ##################################
@@ -294,7 +296,7 @@ class ManageCart(View):
             cartproduct_obj.delete()
             cart_obj.save()
 
-        return redirect("cart_view")
+        return redirect("app:cart_view")
 
 
 ######################## EMPTY CART ##################################
@@ -317,7 +319,7 @@ class EmptyCart(View):
                 messages.info(request, "There are no products in the cart.")
         else:
             messages.info(request, "There is no cart to empty.")
-        return redirect("cart_view")
+        return redirect("app:cart_view")
     
 
 ######################## CHECKOUT ##################################
@@ -329,7 +331,7 @@ class EmptyCart(View):
 class Checkout(CreateView):
     template_name = 'checkout.html'
     form_class = CheckoutForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('app:home')
     
 
     def get_context_data(self, **kwargs):
@@ -368,14 +370,61 @@ class Checkout(CreateView):
             form.instance.order_status = 'Order Received'
             del self.request.session['cart_id']
         else:
-            return redirect('home')  # Redirect if no cart ID is found in session
+            return redirect('app:home')  # Redirect if no cart ID is found in session
 
         return super().form_valid(form)
     
+
+
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.contrib import messages
+
 class CustomerRegister(CreateView):
-    template_name ='register.html'
+    template_name = 'register.html'
     form_class = CustomerRegisterForm
     success_url = reverse_lazy('app:home')
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        email = form.cleaned_data.get("email")
+        full_name = form.cleaned_data.get("full_name")
+        address = form.cleaned_data.get("address")
+            # Create the user and customer
+        user = User.objects.create_user(username, email, password)
+        Customer.objects.create(user=user, full_name=full_name, address=address)
+        login(self.request, user)
+            
+            # Add a success message and redirect
+
+        return redirect(self.success_url)
+        
+            
+class CustomerLogout(View):
+    def get(self,request):
+        logout(request)
+        return redirect('app:home')
+    
+class CustomerLogin(FormView):
+    template_name = 'login.html'
+    form_class = CustomerLoginForm
+    success_url = reverse_lazy('app:home')
+
+    # FORM VALID METHOD IS A TYPE OF METHOD AND IS AVILIABLE IN CREATEVIEW , FORMVIEW, AND UPDATEVIEW
+    def form_valid(self, form):
+        uname = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username = uname, password = password)
+        if user is not None and user.customer:
+            login(self.request, user)
+        else:
+            return render(self.request, 'login.html', {'form': self.form_class, "error": "Please Check the Username and Password"})
+        return super().form_valid(form)
+    
+
+
+    
 
     
 

@@ -42,8 +42,8 @@
                                                         <form action="" class="num-block">
                                                             <input type="text" class="in-num" value="{{ cart.quantity }}" />
                                                             <div class="qtybutton-box">
-                                                                <a href="{% url 'manage_cart' cart.id %}?action=inc" class="qty-button plus">+</a>
-                                                                <a href="{% url 'manage_cart' cart.id %}?action=dec" class="qty-button minus">-</a>
+                                                                <a href="{% url 'app:manage_cart' cart.id %}?action=inc" class="qty-button plus">+</a>
+                                                                <a href="{% url 'app:manage_cart' cart.id %}?action=dec" class="qty-button minus">-</a>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -52,7 +52,7 @@
                                                     <span>Rs {{ cart.subtotal }}</span>
                                                 </td>
                                                 <td class="product-delete">
-                                                    <a href="{% url 'manage_cart' cart.id %}?action=rmv">
+                                                    <a href="{% url 'app:manage_cart' cart.id %}?action=rmv">
                                                         <i class="flaticon-trash"></i>
                                                     </a>
                                                 </td>
@@ -75,10 +75,10 @@
                         <div class="shop-cart-bottom mt-20">
                             <div class="cart-total pt-15">
                                 {% if cart.cartproduct_set.all %}
-                                    <a href="{% url 'empty_cart' %}" class="btn btn-primary">Empty Cart</a>
+                                    <a href="{% url 'app:empty_cart' %}" class="btn btn-primary">Empty Cart</a>
                                 {% endif %}
-                                <a href="{% url 'home' %}" class="btn">Update Shopping</a>
-                                <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout</a>
+                                <a href="{% url 'app:home' %}" class="btn">Update Shopping</a>
+                                <a href="{% url 'app:checkout' %}" class="btn">Proceed to Checkout</a>
                             </div>
                         </div>
                     </div>

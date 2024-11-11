@@ -1,7 +1,10 @@
 from django.contrib import admin
 from app.models import *
 # Register your models here.
-admin.site.register(Customer)
+
+class CustomerAdmin(admin.ModelAdmin):
+   list_display = ('full_name', 'user', 'address', 'joined_on')
+admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(CartProduct)

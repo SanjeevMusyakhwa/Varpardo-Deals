@@ -30,7 +30,7 @@
                                   <a href="shop-details.html"><img src="img/product/n_arrival_product01.jpg" alt=""></a>
                                   <div class="product-overlay-action">
                                       <ul>
-                                          <li><a href="{% url 'add_to_cart' product.id %}"><i class="far fa-heart"></i></a></li>
+                                          <li><a href="{% url 'app:add_to_cart' product.id %}"><i class="far fa-heart"></i></a></li>
                                           <li><a href="shop-details.html"><i class="far fa-eye"></i></a></li>
                                       </ul>
                                   </div>
@@ -39,7 +39,7 @@
                                 
                                 <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid mb-4" style="max-height: 200px; min-height: 200px; object-fit: cover;">
 
-                                  <h5><a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a></h5>
+                                  <h5><a href="{% url 'app:product_detail' product.slug %}">{{ product.title }}</a></h5>
                                   <p>{{ product.description }}</p>
                               </div>
                           </div>

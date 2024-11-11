@@ -66,16 +66,7 @@
                           <span>Views: {{ product.view_count }} times</span>
                       </div>
                       <div class="perched-info">
-                          <div class="cart-plus-minus">
-                              <form action="#" class="num-block">
-                                  <input type="text" class="in-num" value="1" readonly="">
-                                  <div class="qtybutton-box">
-                                      <span class="plus">+</span>
-                                      <span class="minus dis">-</span>
-                                  </div>
-                              </form>
-                          </div>
-                          <a href="{% url 'add_to_cart' product.id %}" class="btn">add to cart</a>
+                          <a href="{% url 'app:add_to_cart' product.id %}" class="btn">add to cart</a>
                           <div class="wishlist-compare">
                               <ul>
                                   <li><a href="#"><i class="far fa-heart"></i> Add to Wishlist</a></li>

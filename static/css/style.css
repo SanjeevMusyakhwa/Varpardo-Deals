@@ -103,7 +103,11 @@ h6 {
 	font-style: normal;
 	font-weight: 600;
 	text-transform: normal;
+
     
+}
+.errorlist{
+    color: red;
 }
 h1 a,
 h2 a,

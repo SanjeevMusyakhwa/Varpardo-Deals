@@ -21,7 +21,7 @@
                         <div class="features-product-item">
                             <div class="features-product-thumb">
                                 <div class="discount-tag">-{{ p.get_discount_percentage|floatformat:0 }}%</div>
-                                <a href="{% url 'product_detail' p.slug %}">
+                                <a href="{% url 'app:product_detail' p.slug %}">
                                     <img src="{{ p.image.url }}" alt="{{ p.title }}" class="img-fluid" style="
                       max-height: 200px;
                       min-height: 200px;
@@ -47,14 +47,14 @@
                                     <i class="far fa-star"></i>
                                     <i class="far fa-star"></i>
                                 </div>
-                                <h5><a href="{% url 'product_detail' p.slug %}">{{ p.title }}</a></h5>
+                                <h5><a href="{% url 'app:product_detail' p.slug %}">{{ p.title }}</a></h5>
 
                                 <p class="price">
                                     Price: <strike>Rs {{ p.marked_price }}</strike> Rs {{ p.selling_price }}
                                 </p>
                             </div>
                             <div class="features-product-cart">
-                                <a href="{% url 'add_to_cart' p.id %}" class="btn">Add to Cart</a>
+                                <a href="{% url 'app:add_to_cart' p.id %}" class="btn">Add to Cart</a>
                             </div>
                         </div>
                     </div>
