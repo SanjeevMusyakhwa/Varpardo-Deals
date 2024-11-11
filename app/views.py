@@ -501,10 +501,34 @@ class CustomerOrderDetail(DetailView):
             return redirect('/login/?next=/profile/')
         return super().dispatch(request, *args, **kwargs)
     
+class Search(TemplateView):
+    template_name = 'search.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        keyword = self.request.GET.get('keyword')
 
+        if keyword:
+            # Search in both `title` and `category__name`
+            result = Product.objects.filter(
+                Q(title__icontains=keyword) | Q(category__title__icontains=keyword) | Q(description__icontains=keyword) | Q(return_policy__icontains=keyword)
+            ).distinct()
+        else:
+            result = Product.objects.none()  # No results if no keyword
+
+        context['result'] = result
+        return context
 ###################################################################### Admin Login ###############################################################
-class AdminLogin(FormView):
+
+class AdminRequiredMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
+            pass
+        else:
+            return redirect('/admin_login/')
+        return super().dispatch(request, *args, **kwargs)
+
+class AdminLogin(AdminRequiredMixin,FormView):
     template_name = 'AdminPanel/adminlogin.html'
     form_class = AdminLoginForm
     success_url = reverse_lazy('app:adminhome')
@@ -520,23 +544,41 @@ class AdminLogin(FormView):
         return super().form_valid(form)
 
 
-class AdminHomePage(TemplateView):
+class AdminHomePage(AdminRequiredMixin,TemplateView):
     template_name = 'AdminPanel/adminhome.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and Admin.objects.filter(user=request.user).exists():
-            pass
-        else:
-            return redirect('/admin_login/?next=/profile/')
-        return super().dispatch(request, *args, **kwargs)
+    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pendingorders'] = Order.objects.filter(
             order_status ='Order Received'
-        )
+        ).order_by('-id')
         return context
     
+class AdminOrderDetail(AdminRequiredMixin,DetailView):
+    template_name = 'AdminPanel/orderdetail.html'
+    model = Order
+    context_object_name = 'order_obj'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status'] = ORDER_STATUS
+        return context
+
+class AdminAllOrder(AdminRequiredMixin,ListView):
+    template_name = 'AdminPanel/allorderlist.html'
+    queryset = Order.objects.all().order_by('-id')
+    context_object_name = 'order_obj'
+    
+class AdminOrderStatusChange(AdminRequiredMixin,View):
+    def post(self, request,*args, **kwargs):
+        order_id = self.kwargs['pk']
+        order_obj = Order.objects.get(id = order_id)
+        new_status = request.POST.get('status')
+        order_obj.order_status = new_status
+        order_obj.save()
+        return redirect(reverse_lazy('app:adminorderdetail', kwargs={'pk': order_id}))
     
 
 

@@ -18,6 +18,7 @@ urlpatterns = [
     path('manage_cart/<int:cp_id>/', views.ManageCart.as_view(), name='manage_cart'),
     path('empty_cart/', views.EmptyCart.as_view(), name='empty_cart'),
     path('checkout/', views.Checkout.as_view(), name='checkout'),
+    path('search/', views.Search.as_view(), name='search'),
 
      ############## REGISTERATION ######################
      path('register/', views.CustomerRegister.as_view(), name='customerregistration'),
@@ -31,5 +32,9 @@ urlpatterns = [
      ################################################## ADMIN PANEL ######################################################
      path('admin_login/', views.AdminLogin.as_view(), name='admin_login'),
      path('admin_home/', views.AdminHomePage.as_view(), name='adminhome'),
+     path('adminorder_detail/<int:pk>/', views.AdminOrderDetail.as_view(), name='adminorderdetail'),
+     path('adminallorder/', views.AdminAllOrder.as_view(), name='adminallorder'),
+     path('adminorder-<int:pk>-change/', views.AdminOrderStatusChange.as_view(), name='adminorderchange'),
+     
 
 ]

@@ -1,11 +1,11 @@
 {% extends "AdminPanel/adminbase.html" %}
 {% load humanize %}
 {% block title %}
-  Admin Home
+  All Order List
 {% endblock title %}
 {% block content %}
 <div class="container">
-    <h1 class="text-center mt-5">Order List</h1>
+    <h1 class="text-center mt-5">All Order List</h1>
   <div class="row mt-4">
       <div class="col-12">
           <div class="cart-wrapper">
@@ -18,27 +18,28 @@
                               <th class="product-name">Customer</th>
                               <th class="product-price">Ordered On</th>
                               <th class="product-quantity">Amount</th>
+                              <th class="product-quantity">Order Status</th>
                           </tr>
                       </thead>
                       <tbody>
-                              {% for order in pendingorders %}
+                              {% for order in order_obj %}
                                   <tr>
-                                      <td class="product-name">
+                                      <td class="product-title">
                                           <h4>
                                               {{ forloop.counter }}
                                           </h4>
                                       </td>
-                                      <td class="product-name">
+                                      <td class="product-title">
                                         <h4>
                                             <a href="{% url 'app:adminorderdetail' order.id %}">#ORDER_{{ order.id }}</a>
                                         </h4>
                                     </td>
-                                    <td class="product-name">
+                                    <td class="product-title">
                                       <h4>
                                           {{ order.ordered_by }}
                                       </h4>
                                   </td>
-                                  <td class="product-name">
+                                  <td class="product-title">
                                     <h4>
                                         {{ order.created_at }}
                                     </h4>
@@ -46,6 +47,11 @@
                                 <td class="product-price">
                                   <h4>
                                       Rs {{ order.total }}
+                                  </h4>
+                              </td>
+                                <td class="product-title">
+                                  <h4>
+                                    {{ order.order_status }}
                                   </h4>
                               </td>
                                     

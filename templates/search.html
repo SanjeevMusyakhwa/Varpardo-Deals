@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}
+  Search Results
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="ml-5 mt-4">Search Results for <i>{{ request.GET.keyword }}</i></h1>
+      <hr>
+
+      {% if result %}
+        {% for item in result %}
+          <div class="row mb-4">
+            <div class="col-md-4">
+              {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" class="img-fluid">
+              {% else %}
+                <p>No image available</p>
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <h4>{{ item.title }}</h4>
+              <p>{{ item.description|truncatewords:30 }}</p>
+              <a href="{% url 'app:product_detail' item.slug %} " class="btn btn-primary">View Details</a>
+            </div>
+          </div>
+          <hr>
+        {% endfor %}
+      {% else %}
+        <p>No results found for "{{ request.GET.keyword }}"</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
