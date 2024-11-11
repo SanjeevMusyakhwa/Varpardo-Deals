@@ -1,7 +1,9 @@
 
+
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import TemplateView, ListView, View, CreateView, FormView, DetailView
 from app.models import *
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from .models import Category
 from django.contrib import messages
@@ -33,7 +35,11 @@ class HomePage(AppMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["products"] = Product.objects.all().order_by("-id")
+        products = Product.objects.all().order_by("-id")
+        paginator = Paginator(products,8)
+        page_number = self.request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        context["page_obj"] = page_obj
 
         return context
 
@@ -80,10 +86,13 @@ class CategoryView(AppMixin,TemplateView):
         if filter_available_products:
             # Optionally filter products by availability
             products = products.filter(is_available=True)
-
+        paginator = Paginator(products,6)
+        page_number = self.request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        context["page_obj"] = page_obj
         # Add categories and products to context
         context["categories"] = categories
-        context["products"] = products
+        context["page_obj"] = page_obj
 
         return context
 
@@ -141,6 +150,10 @@ class ProductListByCategoryView(AppMixin,ListView):
             )
         else:
             categories = Category.objects.all()
+        
+
+
+
 
         context["categories"] = categories
 

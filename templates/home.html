@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="row new-arrival-active">
-                {% for p in products %}
+                {% for p in page_obj %}
                 <div class="col-xl-3 col-lg-4 col-sm-6 grid-item grid-sizer mb-3 cat-two">
                     <div class="col">
                         <div class="features-product-item">
@@ -60,7 +60,44 @@
                     </div>
                 </div>
                 {% endfor %}
-            </div>
+            
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                {% endif %}
+        
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+        
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        
         </div>
     </section>
     <!-- new-arrival-area-end -->

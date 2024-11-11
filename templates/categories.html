@@ -21,22 +21,22 @@
                       </div>
                   </div>
 
-                  {% if products %}
+                  {% if page_obj %}
                   <div class="row">
-                    {% for product in products %}
+                    {% for product in page_obj %}
                       <div class="col-xl-4 col-sm-6">
                           <div class="new-arrival-item text-center mb-50">
                               <div class="thumb mb-25">
-                                  <a href="shop-details.html"><img src="img/product/n_arrival_product01.jpg" alt=""></a>
+                                  <a href="{% url 'app:product_detail' product.slug %}"><img src="img/product/n_arrival_product01.jpg" alt=""></a>
                                   <div class="product-overlay-action">
                                       <ul>
                                           <li><a href="{% url 'app:add_to_cart' product.id %}"><i class="far fa-heart"></i></a></li>
-                                          <li><a href="shop-details.html"><i class="far fa-eye"></i></a></li>
+                                          <li><a href="{% url 'app:product_detail' product.slug %}"><i class="far fa-eye"></i></a></li>
                                       </ul>
                                   </div>
                               </div>
                               <div class="content">
-                                
+                                  
                                 <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid mb-4" style="max-height: 200px; min-height: 200px; object-fit: cover;">
 
                                   <h5><a href="{% url 'app:product_detail' product.slug %}">{{ product.title }}</a></h5>
@@ -46,18 +46,36 @@
                       </div>
                     {% endfor %}
                   </div>
-                  <div class="pagination-wrap">
-                      <ul>
-                          <li class="prev"><a href="#">Prev</a></li>
-                          <li><a href="#">1</a></li>
-                          <li class="active"><a href="#">2</a></li>
-                          <li><a href="#">3</a></li>
-                          <li><a href="#">4</a></li>
-                          <li><a href="#">...</a></li>
-                          <li><a href="#">10</a></li>
-                          <li class="next"><a href="#">Next</a></li>
-                      </ul>
-                  </div>
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        {% endif %}
+                
+                        {% for num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == num %} active {% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+                
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                
                   {% else %}
                     <p>No products available for this category. Select another one.</p>
                   {% endif %}
