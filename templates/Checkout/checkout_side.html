@@ -1,0 +1,41 @@
+<aside class="checkout-sidebar">
+  <h6 class="title">Cart Totals</h6>
+  <div class="shop-cart-widget">
+      <form action="#">
+        
+          <ul>
+            {% for cart in cart.cartproduct_set.all %}
+              <li class="sub-total"><span>SUBTOTAL ( {{cart.product.title }} ): </span>Rs {{ cart.subtotal }}</li>
+             
+                {% endfor %}
+              
+              <li class="cart-total-amount"><span>TOTAL</span> <span class="amount">Rs {{ cart.total }}</span></li>
+          </ul>
+         
+          <!-- <div class="payment-method-info">
+              <div class="paypal-method-flex">
+                  <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="customCheck5">
+                      <label class="custom-control-label" for="customCheck5">Cash on delivery</label>
+                      <p>Pay with cash upon delivery.</p>
+                  </div>
+              </div>
+              <div class="paypal-method-flex">
+                  <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="customCheck6">
+                      <label class="custom-control-label" for="customCheck6">Payments on Card</label>
+                  </div>
+                  <div class="paypal-logo"><img src="img/images/card.png" alt=""></div>
+              </div>
+          </div> -->
+          <!-- <div class="payment-terms">
+              <p>The purpose Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore</p>
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="customCheck7">
+                  <label class="custom-control-label" for="customCheck7">I have read and agree to the website terms and conditions</label>
+              </div>
+          </div> -->
+      </form>
+  </div>
+</aside>

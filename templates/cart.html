@@ -1,86 +1,12 @@
-{% extends "base.html" %} {% load static %} {% load humanize %} {% block title %} Cart {% endblock title %} {% block content %}
+{% extends "base.html" %} {% load static %} {% block title %} Cart {% endblock title %} {% block content %}
 <main>
     <div class="cart-area pt-100 pb-100">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="cart-wrapper">
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="product-thumbnail"></th>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">Subtotal</th>
-                                        <th class="product-delete"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% if empty_cart_message %}
-                                        <div class="alert alert-info">
-                                            {{ empty_cart_message }}
-                                        </div>
-                                    {% endif %}
-                                    {% if cart and cart.cartproduct_set.all %}
-                                        {% for cart in cart.cartproduct_set.all %}
-                                            <tr>
-                                                <td class="product-thumbnail">
-                                                    <a href="shop-details.html">
-                                                        <img src="{{ cart.product.image.url }}" alt="{{ cart.product.title }}" />
-                                                    </a>
-                                                </td>
-                                                <td class="product-name">
-                                                    <h4>
-                                                        <a href="shop-details.html">{{ cart.product.title }}</a>
-                                                    </h4>
-                                                </td>
-                                                <td class="product-price">Rs {{ cart.rate|intcomma }}</td>
-                                                <td class="product-quantity">
-                                                    <div class="cart-plus-minus">
-                                                        <form action="" class="num-block">
-                                                            <input type="text" class="in-num" value="{{ cart.quantity }}" />
-                                                            <div class="qtybutton-box">
-                                                                <a href="{% url 'app:manage_cart' cart.id %}?action=inc" class="qty-button plus">+</a>
-                                                                <a href="{% url 'app:manage_cart' cart.id %}?action=dec" class="qty-button minus">-</a>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                                <td class="product-subtotal">
-                                                    <span>Rs {{ cart.subtotal|intcomma }}</span>
-                                                </td>
-                                                <td class="product-delete">
-                                                    <a href="{% url 'app:manage_cart' cart.id %}?action=rmv">
-                                                        <i class="flaticon-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        <td colspan="6" class="text-end">
-                                            <div><i>The Total Price of the product in the Cart : <strong> {{ cart.total|intcomma }}</strong></i></div>
-                                        </td>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="6" class="text-center">
-                                                <div class="alert alert-info">There are no products in the cart.</div>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                            <h3 class="title text-center mt-2">Cart Totals : {{ cart.total|intcomma }}</h3>
-                        </div>
-                        <div class="shop-cart-bottom mt-20">
-                            <div class="cart-total pt-15">
-                                {% if cart.cartproduct_set.all %}
-                                    <a href="{% url 'app:empty_cart' %}" class="btn btn-primary">Empty Cart</a>
-                                {% endif %}
-                                <a href="{% url 'app:home' %}" class="btn">Update Shopping</a>
-                                <a href="{% url 'app:checkout' %}" class="btn">Proceed to Checkout</a>
-                            </div>
-                        </div>
+                        {% include "Cart/carttable.html" %}
+                        {% include "Cart/cartbottom.html" %}
                     </div>
                 </div>
             </div>

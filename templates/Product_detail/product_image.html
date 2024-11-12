@@ -1,0 +1,50 @@
+{% load humanize %}
+<div class="row">
+  <div class="col-lg-7">
+      <div class="shop-details-flex-wrap">
+          <div class="shop-details-img-wrap">
+              <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="item-one" role="tabpanel" aria-labelledby="item-one-tab">
+                      <div class="shop-details-img">
+                          <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="item-two" role="tabpanel" aria-labelledby="item-two-tab">
+                      <div class="shop-details-img">
+                          <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="item-three" role="tabpanel" aria-labelledby="item-three-tab">
+                      <div class="shop-details-img">
+                          <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-lg-5">
+      <div class="shop-details-content">
+          <a href="#" class="product-cat">{{ product.category.title }}</a>
+      <h3 class="title">{{ product.title }}</h3>
+          <div class="rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+          </div>
+      <p class="style-name">Slug Name : {{ product.slug }}</p>
+      <div class="price">Price: <strike>Rs {{ product.marked_price|intcomma }}</strike> Rs {{ product.selling_price|intcomma }}</div>
+      <div class="product-details-info">
+          <span>Warranty : {{ product.warranty }} months</span>
+          <span>Return Policy: {{ product.return_policy }} peroid</span>
+          <span>Views: {{ product.view_count }} times</span>
+      </div>
+      <div class="perched-info">
+          <a href="{% url 'app:add_to_cart' product.id %}" class="btn">add to cart</a>
+      </div>
+
+  </div>
+</div>
+</div>

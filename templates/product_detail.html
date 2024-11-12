@@ -1,140 +1,26 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% block title %}
-  {{ product.title }}
+{{ product.title }}
 {% endblock title %}
 {% block content %}
 <main>
-
-            
-
-  <!-- shop-details-area -->
-  <section class="shop-details-area pt-100 pb-95">
-      <div class="container">
-          <div class="row">
-              <div class="col-lg-7">
-                  <div class="shop-details-flex-wrap">
-                      <div class="shop-details-nav-wrap">
-                          <ul class="nav nav-tabs" id="myTab" role="tablist">
-                              <li class="nav-item" role="presentation">
-                                  <a class="nav-link active" id="item-one-tab" data-toggle="tab" href="#item-one" role="tab" aria-controls="item-one" aria-selected="true"><img src="img/product/sd_nav_img01.jpg" alt=""></a>
-                              </li>
-                              <li class="nav-item" role="presentation">
-                                  <a class="nav-link" id="item-two-tab" data-toggle="tab" href="#item-two" role="tab" aria-controls="item-two" aria-selected="false"><img src="img/product/sd_nav_img02.jpg" alt=""></a>
-                              </li>
-                              <li class="nav-item" role="presentation">
-                                  <a class="nav-link" id="item-three-tab" data-toggle="tab" href="#item-three" role="tab" aria-controls="item-three" aria-selected="false"><img src="img/product/sd_nav_img03.jpg" alt=""></a>
-                              </li>
-                          </ul>
-                      </div>
-                      <div class="shop-details-img-wrap">
-                          <div class="tab-content" id="myTabContent">
-                              <div class="tab-pane fade show active" id="item-one" role="tabpanel" aria-labelledby="item-one-tab">
-                                  <div class="shop-details-img">
-                                      <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                                  </div>
-                              </div>
-                              <div class="tab-pane fade" id="item-two" role="tabpanel" aria-labelledby="item-two-tab">
-                                  <div class="shop-details-img">
-                                      <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                                  </div>
-                              </div>
-                              <div class="tab-pane fade" id="item-three" role="tabpanel" aria-labelledby="item-three-tab">
-                                  <div class="shop-details-img">
-                                      <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-lg-5">
-                  <div class="shop-details-content">
-                      <a href="#" class="product-cat">{{ product.category.title }}</a>
-                      <h3 class="title">{{ product.title }}</h3>
-                      <div class="rating">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                      </div>
-                      <p class="style-name">Slug Name : {{ product.slug }}</p>
-                      <div class="price">Price: <strike>Rs {{ product.marked_price|intcomma }}</strike> Rs {{ product.selling_price|intcomma }}</div>
-                      <div class="product-details-info">
-                          <span>Warranty : {{ product.warranty }} months</span>
-                          <span>Return Policy: {{ product.return_policy }} peroid</span>
-                          <span>Views: {{ product.view_count }} times</span>
-                      </div>
-                      <div class="perched-info">
-                          <a href="{% url 'app:add_to_cart' product.id %}" class="btn">add to cart</a>
-                      </div>
-                      
-                  </div>
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-12">
-                  <div class="product-desc-wrap">
-                      <ul class="nav nav-tabs" role="tablist">
-                          <li class="nav-item" role="presentation">
-                              <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description"
-                                  aria-selected="true">Description Guide</a>
-                          </li>
-                          <li class="nav-item" role="presentation">
-                              <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews"
-                                  aria-selected="false">Reviews</a>
-                          </li>
-                      </ul>
-                      <div class="tab-content">
-                          <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                              <div class="product-desc-title mb-30">
-                                  <h4 class="title">Additional information :</h4>
-                              </div>
-                              <p>{{ product.description|linebreaksbr }}</p>
-                          </div>
-                          <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                              <div class="product-desc-title mb-30">
-                                  <h4 class="title">Reviews (0) :</h4>
-                              </div>
-                              <p>Your email address will not be published. Required fields are marked</p>
-                              <p class="adara-review-title">Be the first to review “Adara”</p>
-                              <div class="review-rating">
-                                  <span>Your rating *</span>
-                                  <div class="rating">
-                                      <i class="fas fa-star"></i>
-                                      <i class="fas fa-star"></i>
-                                      <i class="fas fa-star"></i>
-                                      <i class="fas fa-star"></i>
-                                      <i class="fas fa-star"></i>
-                                  </div>
-                              </div>
-                              <form action="#" class="comment-form review-form">
-                                  <span>Your review *</span>
-                                  <textarea name="message" id="comment-message" placeholder="Your Comment"></textarea>
-                                  <div class="row">
-                                      <div class="col-md-6">
-                                          <input type="text" placeholder="Your Name*">
-                                      </div>
-                                      <div class="col-md-6">
-                                          <input type="email" placeholder="Your Email*">
-                                      </div>
-                                  </div>
-                                  <div class="comment-check-box">
-                                      <input type="checkbox" id="comment-check">
-                                      <label for="comment-check">Save my name and email in this browser for the next time I comment.</label>
-                                  </div>
-                                  <button class="btn">Submit</button>
-                              </form>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
-  <!-- shop-details-area-end -->
-
+    <section class="shop-details-area pt-100 pb-95">
+        <div class="container">
+            {% include "Product_detail/product_image.html" %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-desc-wrap">
+                        {% include "Product_detail/tab_list.html" %}
+                        <div class="tab-content">
+                            {% include "Product_detail/description_guide.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
 </main>
 <!-- main-area-end -->
 {% endblock content %}

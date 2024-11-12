@@ -10,6 +10,7 @@ from django.contrib import messages
 from app.forms import CheckoutForm, CustomerRegisterForm, CustomerLoginForm, AdminLoginForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login,logout
+from django.http import HttpResponseBadRequest
 
 
 
@@ -199,6 +200,7 @@ class ProductDetailView(AppMixin,TemplateView):
         product.view_count += 1
         product.save()
         context["product"] = product
+        context["rating_range"] = range(1, 6)
         return context
 
 
@@ -531,6 +533,7 @@ class Search(TemplateView):
 
         context['result'] = result
         return context
+    
 ###################################################################### Admin Login ###############################################################
 
 class AdminRequiredMixin(object):

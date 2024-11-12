@@ -1,0 +1,31 @@
+<form action="{% url 'app:checkout' %}" class="checkout-form" method="post">
+  {% csrf_token %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-grp">
+                <label for="ordered_by">Ordered BY</label>
+               {{ form.ordered_by }}
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-grp">
+                <label for="shipping_address">Shipping Address</label>
+                {{ form.shipping_address }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-grp">
+                <label for="mobile">Mobile Number</label>
+                {{ form.mobile }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-grp">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
+        </div>
+        <button class="btn" type="submit">Place order</button>
+
+    </div>
+</form>

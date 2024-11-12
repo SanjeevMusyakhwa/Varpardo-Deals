@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, Customer,User
+from .models import Order, Customer,User, Review  
 
 class CheckoutForm(forms.ModelForm):
   ordered_by = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Ordered By'}))
@@ -34,3 +34,5 @@ class CustomerLoginForm(forms.Form):
 class AdminLoginForm(forms.Form):
   username = forms.CharField(widget=forms.TextInput())
   password = forms.CharField(widget=forms.PasswordInput())
+
+

@@ -1,0 +1,9 @@
+<div class="shop-cart-bottom mt-20">
+  <div class="cart-total pt-15">
+      {% if cart.cartproduct_set.all %}
+          <a href="{% url 'app:empty_cart' %}" class="btn btn-primary">Empty Cart</a>
+      {% endif %}
+      <a href="{% url 'app:home' %}" class="btn">Update Shopping</a>
+      <a href="{% url 'app:checkout' %}" class="btn">Proceed to Checkout</a>
+  </div>
+</div>
